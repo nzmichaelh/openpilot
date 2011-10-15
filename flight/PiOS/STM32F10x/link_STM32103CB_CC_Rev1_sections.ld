@@ -108,22 +108,13 @@ SECTIONS
         _init_stack_top = . - 4 ;
     } > SRAM
 
-    
-    _free_ram = . ;
-    .free_ram (NOLOAD) :
-    {
-	. = ORIGIN(SRAM) + LENGTH(SRAM) - _free_ram ;
-        /* This is used by the startup in order to initialize the .bss section */
-	_ebss = . ;
-	_eram = . ;
-    } > SRAM
+    /* This is a bit unusual.  _ebss is normally the end of the .bss
+       section.  OpenPilot puts it at the end of RAM which ends up
+       zeroing the heap as well.  This may be an accident. */
+    _ebss = ORIGIN(SRAM) + LENGTH(SRAM);
 
-    /* keep the heap section at the end of the SRAM
-     * this will allow to claim the remaining bytes not used
-     * at run time! (done by the reset vector).
-     */
-
-    PROVIDE ( _end = _ebss ) ;
+    /* Used by startup to extend the heap up to the top of RAM. */
+    _eram = _ebss;
 
     /* Stabs debugging sections.  */
     .stab          0 : { *(.stab) }
