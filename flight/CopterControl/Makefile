@@ -430,12 +430,8 @@ CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS)) -I.
 #CFLAGS += -fno-tree-ter
 #CFLAGS += -g$(DEBUGF) -DDEBUG
 
-CFLAGS += -mapcs-frame
-CFLAGS += -fomit-frame-pointer
-CFLAGS += -fpromote-loop-indices
-
 CFLAGS += -Wall
-CFLAGS += -Werror
+#CFLAGS += -Werror
 CFLAGS += -Wa,-adhlns=$(addprefix $(OUTDIR)/, $(notdir $(addsuffix .lst, $(basename $<))))
 # Compiler flags to generate dependency files:
 CFLAGS += -MD -MP -MF $(OUTDIR)/dep/$(@F).d
