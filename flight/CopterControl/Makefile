@@ -430,8 +430,12 @@ CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS)) -I.
 #CFLAGS += -fno-tree-ter
 #CFLAGS += -g$(DEBUGF) -DDEBUG
 
+ifeq ($(CODE_SOURCERY), YES)
+CFLAGS += -fpromote-loop-indices
+endif
+
 CFLAGS += -Wall
-#CFLAGS += -Werror
+CFLAGS += -Werror
 CFLAGS += -Wa,-adhlns=$(addprefix $(OUTDIR)/, $(notdir $(addsuffix .lst, $(basename $<))))
 # Compiler flags to generate dependency files:
 CFLAGS += -MD -MP -MF $(OUTDIR)/dep/$(@F).d

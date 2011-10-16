@@ -298,10 +298,6 @@ CFLAGS += $(CDEFS)
 CFLAGS += $(BLONLY_CDEFS)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS)) -I.
 
-CFLAGS += -mapcs-frame 
-CFLAGS += -fomit-frame-pointer
-CFLAGS += -fpromote-loop-indices
-
 CFLAGS += -Wall 
 CFLAGS += -Werror
 CFLAGS += -Wa,-adhlns=$(addprefix $(OUTDIR)/, $(notdir $(addsuffix .lst, $(basename $<))))
