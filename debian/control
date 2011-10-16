@@ -1,0 +1,22 @@
+Source: openpilot
+Section: misc
+Priority: extra
+Maintainer: Michael Hope <michaelh@juju.net.nz>
+Build-Depends: debhelper (>= 7), qt4-qmake, libqt4-dev, libsdl1.2-dev, libusb-dev, libudev-dev, libphonon-dev, python, libqt4-opengl-dev
+Standards-Version: 3.8.3
+Homepage: http://openpilot.org/
+
+Package: openpilot
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Open source UAV autopilot
+ OpenPilot is a next-generation Open Source UAV autopilot, it is a
+ highly capable platform for multi-rotor craft, helicopters as well as
+ fixed wing aircraft. It has been designed from the ground up by a
+ community of passionate developers from around the globe, its core
+ design principals are of quality and ease of use.  Simplicity does
+ not come with any compromises either: with no hard-coded settings, a
+ complete flight plan scripting language and other powerful features,
+ OpenPilot is an extremely capable UAV autopilot platform.
+ .
+ This packages contains the ground control station and flight firmware.

@@ -1,0 +1,45 @@
+#!/usr/bin/make -f
+#
+# rules that build the OpenPilot GCS and flight firmware
+#
+
+DEST = debian/openpilot/usr
+FIRMWARE = $(DEST)/share/openpilot/firmware
+
+# Mild hack: the plugins are in usr/lib/openpilotgcs and use a rpath
+# based on usr/bin.  Put the plugins directory in the path.
+LD_LIBRARY_PATH += :$(DEST)/lib/openpilotgcs
+export LD_LIBRARY_PATH
+
+%:
+	dh  $@
+
+override_dh_auto_clean:
+	$(MAKE) all_clean
+
+override_dh_auto_build:
+	# Mild hack: build the firmware if a cross compiler is
+	# available.
+	# Don't fail on error as chunks of OpenPilot don't build.
+	-! which arm-none-eabi-gcc || \
+		$(MAKE) -k all_flight CODE_SOURCERY=NO
+	$(MAKE) gcs -k
+
+override_dh_auto_test:
+	# Nothing to do
+	true
+
+override_dh_auto_install:
+	mkdir -p $(DEST) $(FIRMWARE) $(BOOTLOADER)
+	# Grab any firmware
+	for i in build/fw_* build/bl_* build/bu_*; do \
+		cp $$i/`basename $$i`.bin $$i/`basename $$i`.elf $(FIRMWARE) || true; \
+	done
+	-chmod -x $(FIRMWARE)/*
+	# Copy across the GCS
+	cp -a build/ground/openpilotgcs/* $(DEST)
+	# Remove the extra headers, directories, and Makefiles
+	-rm -f $(DEST)/* $(DEST)/*/Makefile
+	rm -rf $(DEST)/src
+	# Swap the wrapper for the actual binary
+	mv $(DEST)/bin/openpilotgcs.bin $(DEST)/bin/openpilotgcs
