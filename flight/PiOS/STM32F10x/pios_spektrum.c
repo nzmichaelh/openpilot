@@ -156,7 +156,7 @@ static bool PIOS_SPEKTRUM_Bind(const struct pios_spektrum_cfg * cfg)
 static int32_t PIOS_SPEKTRUM_Decode(uint8_t b)
 {
 	static uint16_t channel = 0; /*, sync_word = 0;*/
-	uint8_t channeln = 0, frame = 0;
+	uint8_t channeln = 0;
 	uint16_t data = 0;
 	byte_array[bytecount] = b;
 	bytecount++;
@@ -200,7 +200,8 @@ static int32_t PIOS_SPEKTRUM_Decode(uint8_t b)
 	} else {
 		if ((bytecount % 2) == 0) {
 			channel = (prev_byte << 8) + b;
-			frame = channel >> 15;
+			// Note that uint8_t frame = channel >> 15;
+
 			channeln = (channel >> (10+datalength)) & 0x0F;
 			data = channel & (0x03FF+(0x0400*datalength));
 			if(channeln==0 && data<10) // discard frame if throttle misbehaves

@@ -1110,21 +1110,18 @@ void ph_processRxPacket(void)
   t_packet_header *header;
   uint8_t *data;
   uint16_t min_packet_size;
-  uint16_t max_data_size;
 
   if (encrypted)
   {
       header = (t_packet_header *)&encrypted_packet->header;
       data = (uint8_t *)&encrypted_packet->data;
       min_packet_size = AES_BLOCK_SIZE + sizeof(t_packet_header);
-      max_data_size = sizeof(encrypted_packet->data);
   }
   else
   {
       header = (t_packet_header *)&unencrypted_packet->header;
       data = (uint8_t *)&unencrypted_packet->data;
       min_packet_size = 1 + sizeof(t_packet_header);
-      max_data_size = sizeof(unencrypted_packet->data);
   }
 
   if (packet_size < min_packet_size)

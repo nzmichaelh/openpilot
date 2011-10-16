@@ -291,7 +291,6 @@ int32_t PIOS_SPI_TransferByte(uint32_t spi_id, uint8_t b)
 	bool valid = PIOS_SPI_validate(spi_dev);
 	PIOS_Assert(valid)
 
-	uint8_t dummy;
 	uint8_t rx_byte;
 
 	/* 
@@ -299,7 +298,7 @@ int32_t PIOS_SPI_TransferByte(uint32_t spi_id, uint8_t b)
 	 */
 
 	/* Make sure the RXNE flag is cleared by reading the DR register */
-	dummy = spi_dev->cfg->regs->DR;
+	(void)spi_dev->cfg->regs->DR;
 
 	/* Start the transfer */
 	spi_dev->cfg->regs->DR = b;
